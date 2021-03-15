@@ -2,17 +2,14 @@ package by.ItAlex.AlexTest.controller;
 
 import by.ItAlex.AlexTest.persistance.dto.InfoDto;
 import by.ItAlex.AlexTest.service.InfoService;
-import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@Data
+@RequiredArgsConstructor
 @RestController
-
 @RequestMapping("/info")
 public class InfoController {
 
-    @Autowired
     private final InfoService infoService;
 
     @GetMapping("/add")

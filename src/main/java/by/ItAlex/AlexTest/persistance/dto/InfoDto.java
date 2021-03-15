@@ -14,27 +14,27 @@ public class InfoDto {
     private LocalDate date;
     private Long price;
 
-    private ToolDto toolDto;
+//    private ToolDto toolDto;
 
-    InfoDto modelToDto(Info info) {
+    public InfoDto modelToDto(Info info) {
         if (info != null) {
             setId(info.getId());
             setDate(info.getDate());
             setPrice(info.getPrice());
-            setToolDto(new ToolDto().modelToDto(info.getTool()));
+//            setToolDto(new ToolDto().modelToDto(info.getTool()));
         }
 
         return this;
     }
 
-    Info dtoToModel() {
+    public Info dtoToModel() {
 
         Info info = new Info();
 
         info.setId(id);
         info.setDate(date);
         info.setPrice(price);
-        info.setTool(toolDto.dtoToModel());
+//        info.setTool(toolDto.dtoToModel());
 
         return info;
     }

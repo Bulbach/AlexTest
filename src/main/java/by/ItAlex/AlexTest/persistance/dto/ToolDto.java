@@ -15,7 +15,7 @@ public class ToolDto {
     private String name;
     private List<InfoDto> infosDto;
 
-    ToolDto modelToDto(Tool tool) {
+    public ToolDto modelToDto(Tool tool) {
         if (tool != null) {
             setId(tool.getId());
             setName(tool.getName());
