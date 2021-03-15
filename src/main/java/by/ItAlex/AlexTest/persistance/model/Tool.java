@@ -1,4 +1,4 @@
-package by.ItAlex.AlexTest.model;
+package by.ItAlex.AlexTest.persistance.model;
 
 import lombok.*;
 
@@ -13,7 +13,7 @@ import java.util.List;
 @ToString(exclude = "informationEntities")
 
 @Entity
-public class ToolEntity {
+public class Tool {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
@@ -21,16 +21,16 @@ public class ToolEntity {
     private String toolName;
 
     @OneToMany(mappedBy = "toolEntity",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<InformationEntity> informationEntities = new ArrayList<>();
+    private List<Info> informationEntities = new ArrayList<>();
 
-    public void addInformation(InformationEntity information){
+    public void addInformation(Info information){
         informationEntities.add(information);
-        information.setToolEntity(this);
+        information.setTool(this);
     }
 
-    public void removeInformation(InformationEntity information){
+    public void removeInformation(Info information){
         informationEntities.remove(information);
-        information.setToolEntity(null);
+        information.setTool(null);
     }
 
 

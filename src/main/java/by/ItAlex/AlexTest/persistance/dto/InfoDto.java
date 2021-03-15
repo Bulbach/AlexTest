@@ -1,4 +1,4 @@
-package by.ItAlex.AlexTest.dto;
+package by.ItAlex.AlexTest.persistance.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,12 +7,12 @@ import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
-public class Info {
+public class InfoDto {
 
     private Long id;
     private LocalDate date;
     private Long price;
 
-    private Tool tool;
+    private ToolDto toolDto;
 
 }

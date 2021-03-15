@@ -1,9 +1,9 @@
 package by.ItAlex.AlexTest.service;
 
-import by.ItAlex.AlexTest.dto.Tool;
+import by.ItAlex.AlexTest.persistance.dto.ToolDto;
 import by.ItAlex.AlexTest.exeption.ToolAlreadyExistException;
-import by.ItAlex.AlexTest.model.ToolEntity;
-import by.ItAlex.AlexTest.repository.ToolRepository;
+import by.ItAlex.AlexTest.persistance.model.Tool;
+import by.ItAlex.AlexTest.persistance.repository.ToolRepository;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -27,7 +27,7 @@ public class ToolService {
         this.infoService = infoService;
     }
 
-    public Tool registerTool(ToolEntity tool) throws ToolAlreadyExistException {
+    public ToolDto registerTool(Tool tool) throws ToolAlreadyExistException {
         if (tool.getToolName() == null) {
             throw new ToolAlreadyExistException("Имя не заполнено");
         } else if (toolRepository.findByToolName(tool.getToolName()) != null) {
@@ -36,15 +36,15 @@ public class ToolService {
         return modelToDto(toolRepository.save(tool));
     }
 
-    public Tool getById(Long id) {
-        ToolEntity tool = toolRepository.getOne(id);
+    public ToolDto getById(Long id) {
+        Tool tool = toolRepository.getOne(id);
 
         return modelToDto(tool);
     }
 
-    public Tool updateTool(ToolEntity tool) {
+    public ToolDto updateTool(Tool tool) {
 
-        ToolEntity toolEntity = toolRepository.getOne(tool.getId());
+        Tool toolEntity = toolRepository.getOne(tool.getId());
 
         toolEntity.setToolName(tool.getToolName());
 
@@ -52,27 +52,27 @@ public class ToolService {
     }
 
 
-    Tool modelToDto(ToolEntity toolEntity) {
-        Tool tool = new Tool();
-        if (toolEntity != null) {
-            tool.setId(toolEntity.getId());
-            tool.setName(toolEntity.getToolName());
-            tool.setInfos(toolEntity.getInformationEntities()
+    ToolDto modelToDto(Tool tool) {
+        ToolDto toolDto = new ToolDto();
+        if (tool != null) {
+            toolDto.setId(tool.getId());
+            toolDto.setName(tool.getToolName());
+            toolDto.setInfoDtos(tool.getInformationEntities()
                     .stream()
                     .map(infoService::modelToDto)
                     .collect(Collectors.toList())
             );
         }
-        return tool;
+        return toolDto;
     }
 
-    ToolEntity dtoToModel(Tool tool) {
-        ToolEntity entity = new ToolEntity();
-        if (tool != null) {
-            entity.setId(tool.getId());
-            entity.setToolName(tool.getName());
+    Tool dtoToModel(ToolDto toolDto) {
+        Tool entity = new Tool();
+        if (toolDto != null) {
+            entity.setId(toolDto.getId());
+            entity.setToolName(toolDto.getName());
             entity.setInformationEntities(
-                    tool.getInfos().stream()
+                    toolDto.getInfoDtos().stream()
                             .map(infoService::dtoToModel)
                             .collect(Collectors.toList())
             );
@@ -81,7 +81,7 @@ public class ToolService {
         return entity;
     }
 
-    public List<Tool> getAll() {
+    public List<ToolDto> getAll() {
         return toolRepository.findAll()
                 .stream()
                 .map(this::modelToDto)

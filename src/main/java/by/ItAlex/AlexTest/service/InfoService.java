@@ -1,10 +1,10 @@
 package by.ItAlex.AlexTest.service;
 
-import by.ItAlex.AlexTest.dto.Info;
-import by.ItAlex.AlexTest.model.InformationEntity;
-import by.ItAlex.AlexTest.model.ToolEntity;
-import by.ItAlex.AlexTest.repository.InfoRepository;
-import by.ItAlex.AlexTest.repository.ToolRepository;
+import by.ItAlex.AlexTest.persistance.dto.InfoDto;
+import by.ItAlex.AlexTest.persistance.model.Info;
+import by.ItAlex.AlexTest.persistance.model.Tool;
+import by.ItAlex.AlexTest.persistance.repository.InfoRepository;
+import by.ItAlex.AlexTest.persistance.repository.ToolRepository;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -27,46 +27,46 @@ public class InfoService {
         this.toolService = toolService;
     }
 
-    public Info createInfo(Info info) {
-        ToolEntity tool = toolRepository.getOne(info.getId());
+    public InfoDto createInfo(InfoDto infoDto) {
+        Tool tool = toolRepository.getOne(infoDto.getId());
 
-        InformationEntity entity = new InformationEntity();
-        entity.setDate(info.getDate());
-        entity.setPrice(info.getPrice());
-        entity.setToolEntity(tool);
+        Info entity = new Info();
+        entity.setDate(infoDto.getDate());
+        entity.setPrice(infoDto.getPrice());
+        entity.setTool(tool);
         return modelToDto(infoRepository.save(entity));
     }
 
 
-    public Info updateInfo(Info info) {
-        InformationEntity infoEntity = infoRepository.getOne(info.getId());
-        infoEntity.setDate(info.getDate());
-        infoEntity.setPrice(info.getPrice());
+    public InfoDto updateInfo(InfoDto infoDto) {
+        Info infoEntity = infoRepository.getOne(infoDto.getId());
+        infoEntity.setDate(infoDto.getDate());
+        infoEntity.setPrice(infoDto.getPrice());
 
         return modelToDto(infoRepository.save(infoEntity));
     }
 
-    Info modelToDto(InformationEntity informationEntity) {
-        Info info = new Info();
-        if (informationEntity != null) {
+    InfoDto modelToDto(Info info) {
+        InfoDto infoDto = new InfoDto();
+        if (info != null) {
 
-            info.setId(informationEntity.getId());
-            info.setDate(informationEntity.getDate());
-            info.setPrice(informationEntity.getPrice());
-            info.setTool(toolService.modelToDto(informationEntity.getToolEntity()));
+            infoDto.setId(info.getId());
+            infoDto.setDate(info.getDate());
+            infoDto.setPrice(info.getPrice());
+            infoDto.setToolDto(toolService.modelToDto(info.getTool()));
         }
 
-        return info;
+        return infoDto;
     }
 
-    InformationEntity dtoToModel(Info info) {
+    Info dtoToModel(InfoDto infoDto) {
 
-        InformationEntity entity = new InformationEntity();
-        if (info != null) {
-            entity.setId(info.getId());
-            entity.setDate(info.getDate());
-            entity.setPrice(info.getPrice());
-            entity.setToolEntity(toolService.dtoToModel(info.getTool()));
+        Info entity = new Info();
+        if (infoDto != null) {
+            entity.setId(infoDto.getId());
+            entity.setDate(infoDto.getDate());
+            entity.setPrice(infoDto.getPrice());
+            entity.setTool(toolService.dtoToModel(infoDto.getToolDto()));
         }
         return entity;
     }

@@ -1,4 +1,4 @@
-package by.ItAlex.AlexTest.model;
+package by.ItAlex.AlexTest.persistance.model;
 
 import lombok.*;
 
@@ -8,12 +8,12 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = "toolEntity")
-@ToString(exclude = "toolEntity")
+@EqualsAndHashCode(exclude = "tool")
+@ToString(exclude = "tool")
 
 
 @Entity
-public class InformationEntity {
+public class Info {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,7 +24,7 @@ public class InformationEntity {
     @SuppressWarnings("JpaDataSourceORMInspection")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tool_entity_id", referencedColumnName = "id")
-    private ToolEntity toolEntity;
+    private Tool tool;
 
 
 

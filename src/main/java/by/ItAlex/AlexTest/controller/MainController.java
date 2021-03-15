@@ -1,8 +1,8 @@
 package by.ItAlex.AlexTest.controller;
 
-import by.ItAlex.AlexTest.dto.Tool;
-import by.ItAlex.AlexTest.model.ToolEntity;
-import by.ItAlex.AlexTest.repository.ToolRepository;
+import by.ItAlex.AlexTest.persistance.dto.ToolDto;
+import by.ItAlex.AlexTest.persistance.model.Tool;
+import by.ItAlex.AlexTest.persistance.repository.ToolRepository;
 import by.ItAlex.AlexTest.service.ToolService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -22,13 +22,13 @@ public class MainController {
     private final ToolService toolService;
 
     @GetMapping("/all")
-    public List<Tool> getTools() {
+    public List<ToolDto> getTools() {
         return toolService.getAll();
     }
 
 
     @GetMapping("/get/{id}")
-    public Tool getTool(@PathVariable Long id) {
+    public ToolDto getTool(@PathVariable Long id) {
 
         try {
 
@@ -36,24 +36,24 @@ public class MainController {
 
         } catch (Exception e) {
 
-            return new Tool();
+            return new ToolDto();
         }
 
     }
 
     @GetMapping("/add")
-    public Tool addTool(@ModelAttribute ToolEntity tool) {
+    public ToolDto addTool(@ModelAttribute Tool tool) {
         try {
 
             return toolService.registerTool(tool);
         } catch (Exception e) {
 
-            return new Tool();
+            return new ToolDto();
         }
     }
 
     @GetMapping("/update")
-    public Tool update(@ModelAttribute ToolEntity tool) {
+    public ToolDto update(@ModelAttribute Tool tool) {
 
         try {
 
@@ -61,7 +61,7 @@ public class MainController {
 
         } catch (Exception e) {
 
-            return new Tool();
+            return new ToolDto();
         }
     }
 

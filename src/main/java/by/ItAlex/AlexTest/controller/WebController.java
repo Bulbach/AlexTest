@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class WebController {
 
 //    private final ToolRepository toolRepository;
-//    private final ToolEntity toolEntity;
+//    private final Tool toolEntity;
 
     @GetMapping("/")
     public String index(){

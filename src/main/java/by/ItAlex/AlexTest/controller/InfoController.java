@@ -1,6 +1,6 @@
 package by.ItAlex.AlexTest.controller;
 
-import by.ItAlex.AlexTest.dto.Info;
+import by.ItAlex.AlexTest.persistance.dto.InfoDto;
 import by.ItAlex.AlexTest.service.InfoService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,20 +15,20 @@ public class InfoController {
     private final InfoService infoService;
 
     @GetMapping("/add")
-    public Info createInfo(@ModelAttribute Info info) {
+    public InfoDto createInfo(@ModelAttribute InfoDto infoDto) {
         try {
-            return infoService.createInfo(info);
+            return infoService.createInfo(infoDto);
         } catch (Exception e) {
-            return new Info();
+            return new InfoDto();
         }
     }
 
     @PutMapping("/update/{id}")
-    public Info updateInfo(@ModelAttribute Info info) {
+    public InfoDto updateInfo(@ModelAttribute InfoDto infoDto) {
         try {
-            return infoService.updateInfo(info);
+            return infoService.updateInfo(infoDto);
         } catch (Exception e) {
-            return new Info();
+            return new InfoDto();
         }
     }
 
