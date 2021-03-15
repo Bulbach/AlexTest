@@ -9,8 +9,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = "informationEntities")
-@ToString(exclude = "informationEntities")
+@EqualsAndHashCode(exclude = "infos")
+@ToString(exclude = "infos")
 
 @Entity
 public class Tool {
@@ -18,18 +18,18 @@ public class Tool {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Long id;
-    private String toolName;
+    private String name;
 
-    @OneToMany(mappedBy = "toolEntity",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<Info> informationEntities = new ArrayList<>();
+    @OneToMany(mappedBy = "tool",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Info> infos = new ArrayList<>();
 
     public void addInformation(Info information){
-        informationEntities.add(information);
+        infos.add(information);
         information.setTool(this);
     }
 
     public void removeInformation(Info information){
-        informationEntities.remove(information);
+        infos.remove(information);
         information.setTool(null);
     }
 

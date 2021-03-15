@@ -23,7 +23,7 @@ public class Info {
 
     @SuppressWarnings("JpaDataSourceORMInspection")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tool_entity_id", referencedColumnName = "id")
+    @JoinColumn(name = "tool_id", referencedColumnName = "id")
     private Tool tool;
 
 

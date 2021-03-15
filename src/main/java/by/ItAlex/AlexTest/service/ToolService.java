@@ -28,9 +28,9 @@ public class ToolService {
     }
 
     public ToolDto registerTool(Tool tool) throws ToolAlreadyExistException {
-        if (tool.getToolName() == null) {
+        if (tool.getName() == null) {
             throw new ToolAlreadyExistException("Имя не заполнено");
-        } else if (toolRepository.findByToolName(tool.getToolName()) != null) {
+        } else if (toolRepository.findByToolName(tool.getName()) != null) {
             throw new ToolAlreadyExistException("Продукт с таким именем уже зарегестрирован");
         }
         return modelToDto(toolRepository.save(tool));
@@ -46,7 +46,7 @@ public class ToolService {
 
         Tool toolEntity = toolRepository.getOne(tool.getId());
 
-        toolEntity.setToolName(tool.getToolName());
+        toolEntity.setName(tool.getName());
 
         return modelToDto(toolRepository.save(toolEntity));
     }
@@ -56,8 +56,8 @@ public class ToolService {
         ToolDto toolDto = new ToolDto();
         if (tool != null) {
             toolDto.setId(tool.getId());
-            toolDto.setName(tool.getToolName());
-            toolDto.setInfoDtos(tool.getInformationEntities()
+            toolDto.setName(tool.getName());
+            toolDto.setInfoDtos(tool.getInfos()
                     .stream()
                     .map(infoService::modelToDto)
                     .collect(Collectors.toList())
@@ -70,8 +70,8 @@ public class ToolService {
         Tool entity = new Tool();
         if (toolDto != null) {
             entity.setId(toolDto.getId());
-            entity.setToolName(toolDto.getName());
-            entity.setInformationEntities(
+            entity.setName(toolDto.getName());
+            entity.setInfos(
                     toolDto.getInfoDtos().stream()
                             .map(infoService::dtoToModel)
                             .collect(Collectors.toList())

@@ -5,13 +5,14 @@ import by.ItAlex.AlexTest.service.InfoService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 @Data
 @RestController
 
 @RequestMapping("/info")
 public class InfoController {
 
-     @Autowired
+    @Autowired
     private final InfoService infoService;
 
     @GetMapping("/add")
