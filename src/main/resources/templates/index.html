@@ -10,9 +10,30 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <script src="https://www.chartjs.org/samples/latest/utils.js"></script>
     <script src="/js/script.js"></script>
 </head>
 <body>
+
+<header class="container">
+    <div class="row">
+        <div class="col">Меню</div>
+
+    </div>
+</header>
+
+<section class="container">
+    <div id="table-block" class="row"></div>
+</section>
+
+<section class="container">
+    <div class="row">
+        <canvas id="graphic-block" width="400" height="400"></canvas>
+        <button id="randomizeData">Randomize Data</button>
+        <button id="addDataset">Add Dataset</button>
+    </div>
+</section>
 
 </body>
 </html>

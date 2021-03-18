@@ -1,0 +1,250 @@
+$(function () {
+
+    getAll();
+
+
+});
+
+function getAll() {
+    let table = $("#table-block"),
+        graphic = $("#graphic-block");
+
+
+    $.get(
+        "/info/all",
+        {},
+        function (json) {
+            console.log(json);
+            drawTable(json, table);
+            drawGraphic(json, graphic);
+        }
+    );
+}
+
+function drawTable(json, table) {
+
+    let output = "<table>";
+    for (let i = 0; i < json.length; i++) {
+        output += "<tr>";
+        output += "<td>" + json[i].date + "</td>";
+        output += "<td>" + json[i].toolDto.name + "</td>";
+        output += "<td>" + json[i].price + "</td>";
+        output += "</tr>";
+    }
+    output += "</table>";
+
+    table.html(output);
+}
+
+
+function getData(json) {
+    let data = {};
+
+    for (let i = 0; i < json.length; i++) {
+        if (data[json[i].toolDto.name] === undefined) {
+            data[json[i].toolDto.name] = [];
+        }
+        data[json[i].toolDto.name].push(json[i]);
+    }
+
+    return data;
+}
+
+function drawGraphic(json, graphic) {
+
+    let myChart;
+    let data = getData(json);
+    console.log(data);
+    let time = [];
+    let itemDates = json.map(function (item) {
+        return item.date;
+    });
+    itemDates = [...new Set(itemDates)];
+
+    myChart = new Chart(graphic, {
+        type: 'line',
+        data: {
+            labels: itemDates,
+            datasets: Object.keys(data).map(function (tool){
+               return   {
+                   label: '# of шелл',
+                   data: itemDates.map(function (date) {
+                       let rec = data['Шелл'].find(function (p) {
+                           return p.date === date;
+                       });
+                       return rec ? rec.price : null;
+                   }),
+                   backgroundColor: [
+                       'rgba(255, 99, 132, 0.2)',
+                   ],
+                   borderColor: [
+                       'rgba(255, 99, 132, 1)',
+                   ],
+                   borderWidth: 1
+               }
+            }),
+            datasetsOld: [
+                {
+                    label: '# of шелл',
+                    data: itemDates.map(function (date) {
+                        let rec = data['Шелл'].find(function (p) {
+                            return p.date === date;
+                        });
+                        return rec ? rec.price : null;
+                    }),
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+        },
+
+
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+}
+
+//
+// var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+// var config = {
+//     type: 'line',
+//     data: {
+//         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+//         datasets: [{
+//             label: 'My First dataset',
+//             backgroundColor: window.chartColors.red,
+//             borderColor: window.chartColors.red,
+//             data: [
+//                 randomScalingFactor(),
+//                 randomScalingFactor(),
+//                 randomScalingFactor(),
+//                 randomScalingFactor(),
+//                 randomScalingFactor(),
+//                 randomScalingFactor(),
+//                 randomScalingFactor()
+//             ],
+//             fill: false,
+//         }, {
+//             label: 'My Second dataset',
+//             fill: false,
+//             backgroundColor: window.chartColors.blue,
+//             borderColor: window.chartColors.blue,
+//             data: [
+//                 randomScalingFactor(),
+//                 randomScalingFactor(),
+//                 randomScalingFactor(),
+//                 randomScalingFactor(),
+//                 randomScalingFactor(),
+//                 randomScalingFactor(),
+//                 randomScalingFactor()
+//             ],
+//         }]
+//     },
+//     options: {
+//         responsive: true,
+//         title: {
+//             display: true,
+//             text: 'Chart.js Line Chart'
+//         },
+//         tooltips: {
+//             mode: 'index',
+//             intersect: false,
+//         },
+//         hover: {
+//             mode: 'nearest',
+//             intersect: true
+//         },
+//         scales: {
+//             xAxes: [{
+//                 display: true,
+//                 scaleLabel: {
+//                     display: true,
+//                     labelString: 'Month'
+//                 }
+//             }],
+//             yAxes: [{
+//                 display: true,
+//                 scaleLabel: {
+//                     display: true,
+//                     labelString: 'Value'
+//                 }
+//             }]
+//         }
+//     }
+// };
+//
+// window.onload = function() {
+//     var ctx = document.getElementById('graphic-block').getContext('2d');
+//     window.myLine = new Chart(ctx, config);
+// };
+//
+// document.getElementById('randomizeData').addEventListener('click', function() {
+//     config.data.datasets.forEach(function(dataset) {
+//         dataset.data = dataset.data.map(function() {
+//             return randomScalingFactor();
+//         });
+//
+//     });
+//
+//     window.myLine.update();
+// });
+//
+// var colorNames = Object.keys(window.chartColors);
+// document.getElementById('addDataset').addEventListener('click', function() {
+//     var colorName = colorNames[config.data.datasets.length % colorNames.length];
+//     var newColor = window.chartColors[colorName];
+//     var newDataset = {
+//         label: 'Dataset ' + config.data.datasets.length,
+//         backgroundColor: newColor,
+//         borderColor: newColor,
+//         data: [],
+//         fill: false
+//     };
+//
+//     for (var index = 0; index < config.data.labels.length; ++index) {
+//         newDataset.data.push(randomScalingFactor());
+//     }
+//
+//     config.data.datasets.push(newDataset);
+//     window.myLine.update();
+// });
+//
+// document.getElementById('addData').addEventListener('click', function() {
+//     if (config.data.datasets.length > 0) {
+//         var month = MONTHS[config.data.labels.length % MONTHS.length];
+//         config.data.labels.push(month);
+//
+//         config.data.datasets.forEach(function(dataset) {
+//             dataset.data.push(randomScalingFactor());
+//         });
+//
+//         window.myLine.update();
+//     }
+// });
+//
+// document.getElementById('removeDataset').addEventListener('click', function() {
+//     config.data.datasets.splice(0, 1);
+//     window.myLine.update();
+// });
+//
+// document.getElementById('removeData').addEventListener('click', function() {
+//     config.data.labels.splice(-1, 1); // remove the label first
+//
+//     config.data.datasets.forEach(function(dataset) {
+//         dataset.data.pop();
+//     });
+//
+//     window.myLine.update();
+// });
