@@ -1,12 +1,30 @@
+var editableTable;
 $(function () {
-
+    editableTable = new BSTable("mytable", {
+        editableColumns: "0,1,2",           // Make columns 1, 2, & 3 editable
+           // Set the add new row button
+        onEdit:function(row) {              // Set function to call when editing complete
+           console.log(row);
+            // call API here.
+            // use 'row' element to access the columns.
+        },
+        onDelete:function(row) {              // Set function to call when editing complete
+            console.log(row);
+            // call API here.
+            // use 'row' element to access the columns.
+        },
+        advanced: {
+            columnLabel: ''                 // Set the column label to have no text
+        }
+    });
+    editableTable.init();
     getAll();
 
 
 });
 
 function getAll() {
-    let table = $("#table-block"),
+    let tablebody = $("#table-block"),
         graphic = $("#graphic-block");
 
 
@@ -15,26 +33,27 @@ function getAll() {
         {},
         function (json) {
             console.log(json);
-            drawTable(json, table);
+            drawTable(json, tablebody);
             drawGraphic(json, graphic);
         }
     );
 }
 
-function drawTable(json, table) {
+function drawTable(json, tablebody) {
 
-    let output = "<table>";
+    let output = "";
+
 
     for (let i = 0; i < json.length; i++) {
-        output += "<tr>";
+        output += "<tr data-id=" +json[i].id + ">";
         output += "<td>" + json[i].date + "</td>";
         output += "<td>" + json[i].toolDto.name + "</td>";
         output += "<td>" + json[i].price + "</td>";
         output += "</tr>";
     }
-    output += "</table>";
 
-    table.html(output);
+    tablebody.html(output);
+    editableTable.refresh();
 }
 
 
