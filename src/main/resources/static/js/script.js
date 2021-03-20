@@ -24,13 +24,7 @@ function getAll() {
 function drawTable(json, table) {
 
     let output = "<table>";
-    output += <thead class="thead-dark">
-    output+= <tr>
-        output+= <th>Data</th>
-        output+= <th>Tool</th>
-        output+= <th>Price</th>
-        output+= </tr>
-    output+= </thead>
+
     for (let i = 0; i < json.length; i++) {
         output += "<tr>";
         output += "<td>" + json[i].date + "</td>";
