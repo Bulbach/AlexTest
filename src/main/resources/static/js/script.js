@@ -24,6 +24,13 @@ function getAll() {
 function drawTable(json, table) {
 
     let output = "<table>";
+    output += <thead class="thead-dark">
+    output+= <tr>
+        output+= <th>Data</th>
+        output+= <th>Tool</th>
+        output+= <th>Price</th>
+        output+= </tr>
+    output+= </thead>
     for (let i = 0; i < json.length; i++) {
         output += "<tr>";
         output += "<td>" + json[i].date + "</td>";
@@ -50,6 +57,10 @@ function getData(json) {
     return data;
 }
 
+function randCol() {
+    return Math.round(Math.random() * 255);
+}
+
 function drawGraphic(json, graphic) {
 
     let myChart;
@@ -65,41 +76,25 @@ function drawGraphic(json, graphic) {
         type: 'line',
         data: {
             labels: itemDates,
-            datasets: Object.keys(data).map(function (tool){
-               return   {
-                   label: '# of шелл',
-                   data: itemDates.map(function (date) {
-                       let rec = data['Шелл'].find(function (p) {
-                           return p.date === date;
-                       });
-                       return rec ? rec.price : null;
-                   }),
-                   backgroundColor: [
-                       'rgba(255, 99, 132, 0.2)',
-                   ],
-                   borderColor: [
-                       'rgba(255, 99, 132, 1)',
-                   ],
-                   borderWidth: 1
-               }
-            }),
-            datasetsOld: [
-                {
-                    label: '# of шелл',
+            datasets: Object.keys(data).map(function (tool) {
+                return {
+                    label: tool,
                     data: itemDates.map(function (date) {
-                        let rec = data['Шелл'].find(function (p) {
+                        let rec = data[tool].find(function (p) {
                             return p.date === date;
                         });
                         return rec ? rec.price : null;
                     }),
                     backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(' + randCol() + ', ' + randCol() + ', ' + randCol() + ', 0.0)',
                     ],
                     borderColor: [
-                        'rgba(255, 99, 132, 1)',
+                        'rgba(' + randCol() + ', ' + randCol() + ', ' + randCol() + ', 1)',
                     ],
-                    borderWidth: 1
-                }]
+                    borderWidth: 1,
+                    spanGaps: true
+                }
+            }),
         },
 
 

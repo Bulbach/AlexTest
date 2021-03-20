@@ -16,7 +16,7 @@ public class InfoService {
     private final ToolRepository toolRepository;
 
     public InfoDto createInfo(InfoDto infoDto) {
-        Tool tool = toolRepository.getOne(infoDto.getId());
+       Tool tool = toolRepository.getOne(infoDto.getToolDto().getId());
 
         Info entity = new Info();
         entity.setDate(infoDto.getDate());

@@ -17,13 +17,11 @@ public class InfoController {
     private final InfoService infoService;
     private final InfoRepository infoRepository;
 
-    @GetMapping("/add")
-    public InfoDto createInfo(@ModelAttribute InfoDto infoDto) {
-        try {
+    @PostMapping("/add")
+    public InfoDto createInfo(@RequestBody InfoDto infoDto) {
+
             return infoService.createInfo(infoDto);
-        } catch (Exception e) {
-            return new InfoDto();
-        }
+
     }
 
     @PutMapping("/update/{id}")
