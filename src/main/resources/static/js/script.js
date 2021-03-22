@@ -1,26 +1,72 @@
 var editableTable;
+
+function onBeforeDelete(row) {
+    console.log(row);
+    // call API here.
+    // use 'row' element to access the columns.
+    $('#myModalDelete').modal('show');
+    $('#del').one("click", function () {
+        let rowId = $(row).attr('data-id');
+        $.ajax({
+            url: '/info/' + rowId,
+            type: "DELETE",
+            contentType: "application/json; charset=utf-8",
+            success: function () {
+                $('#myModalDelete').modal('hide');
+                getAll();
+            }
+        });
+
+    })
+}
+
 $(function () {
+
     editableTable = new BSTable("mytable", {
-        editableColumns: "0,1,2",           // Make columns 1, 2, & 3 editable
-           // Set the add new row button
-        onEdit:function(row) {              // Set function to call when editing complete
-           console.log(row);
-            // call API here.
-            // use 'row' element to access the columns.
-        },
-        onDelete:function(row) {              // Set function to call when editing complete
+        editableColumns: "0,2",
+        onEdit: function (row) {
             console.log(row);
             // call API here.
             // use 'row' element to access the columns.
+            let rowId = $(row).attr('data-id');
+            let columns = $(row).find('td');
+            console.log(columns);
+            let rowDate = columns.eq(0).text();
+            let rowPrice = columns.eq(2).text();
+            $.ajax({
+                url: '/info/update',
+                type: "POST",
+                data: JSON.stringify({id: rowId, date: rowDate, price: rowPrice}),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function () {
+
+                    getAll();
+                }
+            });
         },
         advanced: {
-            columnLabel: ''                 // Set the column label to have no text
-        }
+            columnLabel: 'Actions',
+            buttonHTML: `<div class="btn-group pull-right">
+                   <button  type="button" id="bEdit" class="btn btn-sm btn-default" >
+                        <span class="fa fa-edit" > </span>
+                  </button>
+                      
+                   <button  type="button" id="bElim" class="btn btn-sm btn-default" onclick="onBeforeDelete(this.parentElement.parentElement.parentElement);">
+                         <span class="fa fa-trash" > </span>
+                    </button>
+                     <button id="bAcep" type="button" class="btn btn-sm btn-default" style="display:none;">
+                        <span class="fa fa-check-circle" > </span>
+                    </button>
+                    <button id="bCanc" type="button" class="btn btn-sm btn-default" style="display:none;" >
+                        <span class="fa fa-times-circle" > </span>
+                    </button>
+                </div>`
+        },
+
     });
     editableTable.init();
     getAll();
-
-
 });
 
 function getAll() {
@@ -45,7 +91,7 @@ function drawTable(json, tablebody) {
 
 
     for (let i = 0; i < json.length; i++) {
-        output += "<tr data-id=" +json[i].id + ">";
+        output += "<tr data-id=" + json[i].id + ">";
         output += "<td>" + json[i].date + "</td>";
         output += "<td>" + json[i].toolDto.name + "</td>";
         output += "<td>" + json[i].price + "</td>";

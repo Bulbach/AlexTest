@@ -24,13 +24,11 @@ public class InfoController {
 
     }
 
-    @PutMapping("/update/{id}")
-    public InfoDto updateInfo(@ModelAttribute InfoDto infoDto) {
-        try {
+    @PostMapping("/update")
+    public InfoDto updateInfo(@RequestBody InfoDto infoDto) {
+
             return infoService.updateInfo(infoDto);
-        } catch (Exception e) {
-            return new InfoDto();
-        }
+
     }
     @GetMapping("/all")
     public List<InfoDto> getAll() {
@@ -38,6 +36,14 @@ public class InfoController {
                 .stream()
                 .map(i -> new InfoDto().modelToDto(i))
                 .collect(Collectors.toList());
+    }
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Long id) {
+
+            infoService.delete(id);
+
+
+
     }
 
 }

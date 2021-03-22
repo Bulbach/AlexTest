@@ -35,6 +35,10 @@ public class InfoService {
         return infoDto.modelToDto(infoRepository.save(infoEntity));
     }
 
+    public void delete(Long id) {
+        infoRepository.deleteById(id);
+
+    }
 }
 
 
